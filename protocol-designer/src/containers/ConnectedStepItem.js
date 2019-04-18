@@ -19,10 +19,10 @@ import StepItem from '../components/steplist/StepItem' // TODO Ian 2018-05-10 wh
 
 type Props = React.ElementProps<typeof StepItem>
 
-type OP = {
+type OP = {|
   stepId: $PropertyType<Props, 'stepId'>,
   stepNumber: $PropertyType<Props, 'stepNumber'>,
-}
+|}
 
 type SP = {|
   stepType: $PropertyType<Props, 'stepType'>,
@@ -41,13 +41,13 @@ type SP = {|
   ingredNames: $PropertyType<Props, 'ingredNames'>,
 |}
 
-type DP = $Diff<$Diff<Props, SP>, OP>
+type DP = $Diff<$Diff<$Exact<Props>, SP>, OP>
 
-const makeMapStateToProps = () => {
+const makeMapStateToProps: () => (BaseState, OP) => SP = () => {
   const getArgsAndErrors = stepFormSelectors.makeGetArgsAndErrorsWithId()
   const getStep = stepFormSelectors.makeGetStepWithId()
 
-  return (state: BaseState, ownProps: OP): SP => {
+  return (state, ownProps) => {
     const { stepId } = ownProps
 
     const argsAndErrors = getArgsAndErrors(state, { stepId })
@@ -104,7 +104,7 @@ function mapDispatchToProps(dispatch: ThunkDispatch<*>): DP {
   }
 }
 
-export default connect(
+export default connect<Props, OP, SP, DP, _, _>(
   makeMapStateToProps,
   mapDispatchToProps
 )(StepItem)

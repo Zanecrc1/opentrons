@@ -400,7 +400,7 @@ const initialLabwareState: LabwareEntities = {
 }
 
 // MIGRATION NOTE: copied from `containers` reducer. Slot + UI stuff stripped out.
-export const labwareInvariantProperties = handleActions(
+export const labwareInvariantProperties = handleActions<LabwareEntities, *>(
   {
     CREATE_CONTAINER: (
       state: LabwareEntities,
@@ -448,7 +448,10 @@ const initialPipetteState = {}
 export type PipetteInvariantState = {
   [pipetteId: string]: $Diff<PipetteEntity, { spec: * }>,
 }
-export const pipetteInvariantProperties = handleActions(
+export const pipetteInvariantProperties = handleActions<
+  PipetteInvariantState,
+  *
+>(
   {
     LOAD_FILE: (
       state: PipetteInvariantState,
@@ -495,7 +498,7 @@ export const pipetteInvariantProperties = handleActions(
 
 type OrderedStepIdsState = Array<StepIdType>
 const initialOrderedStepIdsState = []
-export const orderedStepIds = handleActions(
+export const orderedStepIds = handleActions<OrderedStepIdsState, *>(
   {
     ADD_STEP: (state: OrderedStepIdsState, action: AddStepAction) => [
       ...state,
@@ -550,7 +553,7 @@ export const orderedStepIds = handleActions(
 // move to not having "pristine" steps
 type LegacyStepsState = { [StepIdType]: StepItemData }
 const initialLegacyStepState: LegacyStepsState = {}
-export const legacySteps = handleActions(
+export const legacySteps = handleActions<LegacyStepsState, *>(
   {
     ADD_STEP: (state, action: AddStepAction): LegacyStepsState => ({
       ...state,
